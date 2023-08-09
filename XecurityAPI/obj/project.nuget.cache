@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l5eWd5q5pYciNeFkaz2BULdmP4iKpescKKDjMiRf39aymAB9b6RTpaHtGj6AMv3/QcFRcnDyKm2eodjNKOoZZw==",
+  "dgSpecHash": "2qhCBKCunFf8nfvKaIsZmueQrqHBRVWmjJZCdR0wKbfVXAGlW91YIRZzTrKNbVZ6L2NeGhrY45kyLtgzNFss0w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HFGF\\source\\repos\\Xecurity\\XecurityAPI\\XecurityAPI.csproj",
+  "projectFilePath": "C:\\Users\\HFGF\\Documents\\GitHub\\Xecurity\\XecurityAPI\\XecurityAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HFGF\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\HFGF\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
