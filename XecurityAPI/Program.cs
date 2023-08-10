@@ -1,4 +1,4 @@
-global using XecurityAPI.Models;
+using XecurityAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<XecurityDbContext>();
+builder.Services.AddSwaggerGen(); 
+builder.Services.AddDbContext<XecurityDevDbContext>();
 
 var app = builder.Build();
 

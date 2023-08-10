@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using XecurityAPI.Models;
+using XecurityAPI.Data;
 
 namespace XecurityAPI.Controllers
 {
@@ -8,9 +8,9 @@ namespace XecurityAPI.Controllers
     [ApiController]
     public class TemperatureController : ControllerBase
     {
-        private readonly XecurityDbContext _context;
+        private readonly XecurityDevDbContext _context;
 
-        public TemperatureController(XecurityDbContext context)
+        public TemperatureController(XecurityDevDbContext context)
         {
             _context = context;
         }

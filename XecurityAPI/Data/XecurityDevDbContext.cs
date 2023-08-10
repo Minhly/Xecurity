@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using XecurityAPI.Models;
 
-namespace XecurityAPI.Models;
+namespace XecurityAPI.Data;
 
-public partial class XecurityDbContext : DbContext
+public partial class XecurityDevDbContext : DbContext
 {
-    public XecurityDbContext()
+    public XecurityDevDbContext()
     {
     }
 
-    public XecurityDbContext(DbContextOptions<XecurityDbContext> options)
+    public XecurityDevDbContext(DbContextOptions<XecurityDevDbContext> options)
         : base(options)
     {
     }
@@ -41,19 +42,17 @@ public partial class XecurityDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-H2F0CAB;Database=XecurityDB;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-H2F0CAB;Database=XecurityDevDB;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Address__3213E83F2147D0EE");
+            entity.HasKey(e => e.Id).HasName("PK__Address__3213E83F6BD46B83");
 
             entity.ToTable("Address");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Addresse)
                 .HasMaxLength(1)
                 .HasColumnName("addresse");
@@ -67,13 +66,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Company__3213E83FD076AF81");
+            entity.HasKey(e => e.Id).HasName("PK__Company__3213E83F4BEAE632");
 
             entity.ToTable("Company");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Mail)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -87,13 +84,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<KeyCard>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Key_Card__3213E83F02F1DE05");
+            entity.HasKey(e => e.Id).HasName("PK__Key_Card__3213E83FA0FC0B6B");
 
             entity.ToTable("Key_Card");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Active).HasColumnName("active");
             entity.Property(e => e.ExpDate)
                 .HasColumnType("datetime")
@@ -110,13 +105,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<KeyCardDataHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Key_Card__3213E83F1C0305FC");
+            entity.HasKey(e => e.Id).HasName("PK__Key_Card__3213E83F962E1DDA");
 
             entity.ToTable("Key_Card_Data_History");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateUploaded)
                 .HasColumnType("datetime")
                 .HasColumnName("date_uploaded");
@@ -135,13 +128,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<KeycardServerroom>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Keycard___3213E83F2A7F9D53");
+            entity.HasKey(e => e.Id).HasName("PK__Keycard___3213E83F9E60CC4A");
 
             entity.ToTable("Keycard_Serverroom");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.KeyCardId).HasColumnName("key_card_id");
             entity.Property(e => e.ServerRoomId).HasColumnName("server_room_id");
 
@@ -156,13 +147,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Location__3213E83F9E4E6173");
+            entity.HasKey(e => e.Id).HasName("PK__Location__3213E83FFD8CE516");
 
             entity.ToTable("Location");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AddressId).HasColumnName("address_id");
             entity.Property(e => e.Name)
                 .HasMaxLength(1)
@@ -175,13 +164,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<Sensor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Sensor__3213E83F71E8D8D8");
+            entity.HasKey(e => e.Id).HasName("PK__Sensor__3213E83F30C7D971");
 
             entity.ToTable("Sensor");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(1)
                 .HasColumnName("name");
@@ -199,13 +186,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<SensorType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Sensor_T__3213E83F7AEEA24B");
+            entity.HasKey(e => e.Id).HasName("PK__Sensor_T__3213E83F0B5CBA00");
 
             entity.ToTable("Sensor_Type");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(1)
                 .HasColumnName("name");
@@ -213,13 +198,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<ServerRoom>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Server_R__3213E83F83B6C1C9");
+            entity.HasKey(e => e.Id).HasName("PK__Server_R__3213E83F8C3E5F09");
 
             entity.ToTable("Server_Room");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.LocationId).HasColumnName("location_id");
             entity.Property(e => e.Name).HasMaxLength(1);
 
@@ -230,13 +213,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<TemperatureDatum>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Temperat__3213E83FF42DF6F2");
+            entity.HasKey(e => e.Id).HasName("PK__Temperat__3213E83F5FF2802E");
 
             entity.ToTable("Temperature_Data");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DateUploaded)
                 .HasColumnType("datetime")
                 .HasColumnName("date_uploaded");
@@ -251,13 +232,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3213E83FA996C257");
+            entity.HasKey(e => e.Id).HasName("PK__User__3213E83F2451D4AD");
 
             entity.ToTable("User");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -274,13 +253,11 @@ public partial class XecurityDbContext : DbContext
 
         modelBuilder.Entity<UserType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User_Typ__3213E83F410448B2");
+            entity.HasKey(e => e.Id).HasName("PK__User_Typ__3213E83FCF2C66B9");
 
             entity.ToTable("User_Type");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(1)
                 .HasColumnName("name");
