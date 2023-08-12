@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HFGF\\Desktop\\repos\\XecurityAPI\\XecurityAPI\\XecurityAPI.csproj": {}
+    "C:\\Users\\MinhY\\source\\repos\\Xecurity\\XecurityAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HFGF\\Desktop\\repos\\XecurityAPI\\XecurityAPI\\XecurityAPI.csproj": {
+    "C:\\Users\\MinhY\\source\\repos\\Xecurity\\XecurityAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HFGF\\Desktop\\repos\\XecurityAPI\\XecurityAPI\\XecurityAPI.csproj",
+        "projectUniqueName": "C:\\Users\\MinhY\\source\\repos\\Xecurity\\XecurityAPI.csproj",
         "projectName": "XecurityAPI",
-        "projectPath": "C:\\Users\\HFGF\\Desktop\\repos\\XecurityAPI\\XecurityAPI\\XecurityAPI.csproj",
-        "packagesPath": "C:\\Users\\HFGF\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HFGF\\Desktop\\repos\\XecurityAPI\\XecurityAPI\\obj\\",
+        "projectPath": "C:\\Users\\MinhY\\source\\repos\\Xecurity\\XecurityAPI.csproj",
+        "packagesPath": "C:\\Users\\MinhY\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MinhY\\source\\repos\\Xecurity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HFGF\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MinhY\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -27,7 +27,6 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -80,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
