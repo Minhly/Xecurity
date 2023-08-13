@@ -13,6 +13,10 @@ public partial class User
 
     public int? UserTypeId { get; set; }
 
+    public byte[] PasswordHash { get; set; }
+
+    public byte[] PasswordSalt { get; set; }
+
     public virtual ICollection<KeyCard> KeyCards { get; set; } = new List<KeyCard>();
 
     public virtual UserType? UserType { get; set; }

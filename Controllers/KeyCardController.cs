@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XecurityAPI.Data;
 using XecurityAPI.Models;
@@ -38,11 +39,29 @@ namespace XecurityAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<KeyCard>> PostTemperatures(KeyCard keyCard)
+        public async Task<ActionResult<KeyCard>> PostKeycard(KeyCard keyCard)
         {
             _context.KeyCards.Add(keyCard);
             await _context.SaveChangesAsync();
             return Ok(await _context.TemperatureData.ToListAsync());
         }
+
+        [HttpDelete, Authorize(Roles = "Admin")]
+        public async Task<ActionResult<KeyCard>> DeleteKeyCard(int id)
+        {
+            try
+            {
+                KeyCard keyCard = _context.KeyCards.First(x => x.Id == id);
+                _context.KeyCards.Remove(keyCard);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok("Deleted");
+        }
+        
     }
 }

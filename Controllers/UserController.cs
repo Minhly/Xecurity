@@ -16,14 +16,5 @@ namespace XecurityAPI.Controllers
             _context = context;
         }
 
-/*        [HttpGet]
-        public async Task<IActionResult> GetTemperature()
-        {
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<TemperatureDatum>> PostTemperatures(TemperatureDatum temperature)
-        {
-        }*/
     }
 }

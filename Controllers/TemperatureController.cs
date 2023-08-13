@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XecurityAPI.Data;
 using XecurityAPI.Models;
@@ -35,7 +36,7 @@ namespace XecurityAPI.Controllers
             return Ok(temperatures);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Employee")]
         public async Task<ActionResult<TemperatureDatum>> PostTemperatures(TemperatureDatum temperature)
         {
 
