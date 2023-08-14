@@ -27,13 +27,24 @@ namespace XecurityAPI.Controllers
             return Ok(temperature);
         }
 
-        [Route("GetTemperatures")]
+        [Route("GetTemperaturesFromTheLastHour")]
         [HttpGet]
-        public async Task<IActionResult> GetTemperatures()
+        public async Task<IActionResult> GetTemperaturesFromTheLastHour()
         {
+            DateTime filter = new DateTime();
+            filter = DateTime.UtcNow.AddHours(-1);
             var temperatures = await _context.TemperatureData.ToListAsync();
+            var temperaturesFiltered = new List<TemperatureDatum>();
 
-            return Ok(temperatures);
+            foreach(var temperature in temperatures)
+            {
+                if(temperature.DateUploaded > filter)
+                {
+                    temperaturesFiltered.Add(temperature);
+                }
+            }
+
+            return Ok(temperaturesFiltered);
         }
 
         [HttpPost]
@@ -45,10 +56,10 @@ namespace XecurityAPI.Controllers
                 return BadRequest(ModelState);
             }
 
- /*           if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
+            if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
             {
                 return BadRequest(ModelState);
-            }*/
+            }
 
             try
             {

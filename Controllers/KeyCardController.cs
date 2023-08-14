@@ -62,6 +62,22 @@ namespace XecurityAPI.Controllers
 
             return Ok("Deleted");
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<KeyCard>> UpdateKeycard(int id, KeyCard updatedKeyCard)
+        {
+            var keyCard = _context.KeyCards.FirstOrDefault(c => c.Id == id);
+
+            keyCard.Password = updatedKeyCard.Password;
+            keyCard.ExpDate = updatedKeyCard.ExpDate;
+            keyCard.Active = updatedKeyCard.Active;
+            keyCard.UserId = updatedKeyCard.UserId;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(keyCard);
+
+        }
         
     }
 }
