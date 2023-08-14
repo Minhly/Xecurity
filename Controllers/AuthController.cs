@@ -17,11 +17,14 @@ namespace XecurityAPI.Controllers
     {
         public static User user = new User();
 
+        private readonly XecurityContext _context;
+
         private readonly IConfiguration _configuration;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, XecurityContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpGet, Authorize]
@@ -35,13 +38,18 @@ namespace XecurityAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(User request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Name = request.Username;
+            user.Name = request.Name;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.UserTypeId = request.UserTypeId;
+
+            _context.Users.Add(user);
+
+            await _context.SaveChangesAsync();
 
             return Ok(user);
         }
@@ -49,26 +57,29 @@ namespace XecurityAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if(user.Name != request.Username)
+            foreach (var user in _context.Users)
             {
-                return BadRequest("User not found!");
+                if (request.Username == user.Name)
+                {
+                    if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+                    {
+                        return BadRequest("Wrong password!");
+                    }
+                    string token = CreatToken(user);
+                    return Ok(token);
+                }
             }
 
-            if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-            {
-                return BadRequest("Wrong password!");
-            }
-
-            string token = CreatToken(user);
-
-            return Ok(token);
+            return BadRequest("User not found.");
         }
 
         private string CreatToken(User user)
         {
+            var userType = (UserTypeEnum)user.UserTypeId;
+
             List<Claim> claims = new List<Claim> { 
                 new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, userType.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -77,7 +88,7 @@ namespace XecurityAPI.Controllers
 
             var token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddDays(1),
+                    expires: DateTime.UtcNow.AddDays(100),
                     signingCredentials: creds
                 );
 
@@ -97,7 +108,7 @@ namespace XecurityAPI.Controllers
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);

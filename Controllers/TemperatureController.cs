@@ -17,7 +17,7 @@ namespace XecurityAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetTemperature()
         {
             var temperatures = await _context.TemperatureData.ToListAsync();
@@ -36,7 +36,7 @@ namespace XecurityAPI.Controllers
             return Ok(temperatures);
         }
 
-        [HttpPost, Authorize(Roles = "Employee")]
+        [HttpPost]
         public async Task<ActionResult<TemperatureDatum>> PostTemperatures(TemperatureDatum temperature)
         {
 

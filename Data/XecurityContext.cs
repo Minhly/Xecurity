@@ -244,7 +244,12 @@ public partial class XecurityContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.UserTypeId).HasColumnName("user_type_id");
-
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(255)
+                .HasColumnName("passwordHash");
+                        entity.Property(e => e.PasswordSalt)
+                .HasMaxLength(255)
+                .HasColumnName("passwordSalt");
             entity.HasOne(d => d.UserType).WithMany(p => p.Users)
                 .HasForeignKey(d => d.UserTypeId)
                 .HasConstraintName("FK__User__user_type___398D8EEE");

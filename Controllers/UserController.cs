@@ -16,5 +16,14 @@ namespace XecurityAPI.Controllers
             _context = context;
         }
 
+        [Route("GetUsers")]
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+
+            return Ok(users);
+        }
+
     }
 }
