@@ -38,9 +38,56 @@ namespace XecurityAPI.Controllers
 
             foreach(var temperature in temperatures)
             {
-                if(temperature.DateUploaded > filter)
+                temperaturesFiltered.Clear();
+                if (temperature.DateUploaded > filter)
                 {
                     temperaturesFiltered.Add(temperature);
+                }
+            }
+
+            return Ok(temperaturesFiltered);
+        }
+
+        [Route("GetDangerousTemperaturesFromTheLast24hours")]
+        [HttpGet]
+        public async Task<IActionResult> GetDangerousTemperaturesFromTheLast24hours()
+        {
+            DateTime filter = new DateTime();
+            filter = DateTime.UtcNow.AddDays(-1);
+            var temperatures = await _context.TemperatureData.ToListAsync();
+            var temperaturesFiltered = new List<TemperatureDatum>();
+
+            foreach (var temperature in temperatures)
+            {
+                if (temperature.DateUploaded > filter)
+                {
+                    if(temperature.Temperature < 23 || temperature.Temperature > 26)
+                    {
+                        temperaturesFiltered.Add(temperature);
+                    }
+                }
+            }
+
+            return Ok(temperaturesFiltered);
+        }
+
+        [Route("GetDangerousHumiditiesFromTheLast24hours")]
+        [HttpGet]
+        public async Task<IActionResult> GetDangerousHumiditiesFromTheLast24hours()
+        {
+            DateTime filter = new DateTime();
+            filter = DateTime.UtcNow.AddDays(-1);
+            var temperatures = await _context.TemperatureData.ToListAsync();
+            var temperaturesFiltered = new List<TemperatureDatum>();
+
+            foreach (var temperature in temperatures)
+            {
+                if (temperature.DateUploaded > filter)
+                {
+                    if (temperature.Humidity < 45 || temperature.Humidity > 55)
+                    {
+                        temperaturesFiltered.Add(temperature);
+                    }
                 }
             }
 
@@ -56,10 +103,10 @@ namespace XecurityAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-/*            if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
+            if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
             {
                 return BadRequest(ModelState);
-            }*/
+            }
 
             try
             {
