@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XecurityAPI.Data;
+using XecurityAPI.Dtos;
 using XecurityAPI.Models;
 
 namespace XecurityAPI.Controllers
@@ -80,7 +81,11 @@ namespace XecurityAPI.Controllers
             var temperatures = await _context.TemperatureData.ToListAsync();
             var temperaturesFiltered = new List<TemperatureDatum>();
 
-            foreach (var temperature in temperatures)
+            var temperatures2 = await _context.Set<TemperatureDatum>()
+            .Include(q => q.Sensor.ServerRoom)
+            .ToListAsync();
+
+            foreach (var temperature in temperatures2)
             {
                 if (temperature.DateUploaded > filter)
                 {
