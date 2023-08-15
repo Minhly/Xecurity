@@ -56,10 +56,10 @@ namespace XecurityAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
+/*            if (temperature.Humidity == null || temperature.Temperature == null || temperature.DateUploaded == null || temperature.SensorId == null)
             {
                 return BadRequest(ModelState);
-            }
+            }*/
 
             try
             {
