@@ -49,6 +49,18 @@ namespace XecurityAPI.Controllers
             return Ok(temperaturesFiltered);
         }
 
+        [Route("GetAllTemperatures")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTemperatures()
+        {
+            var temperatures = await _context.Set<TemperatureDatum>()
+            .Include(q => q.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Name)
+            .ToListAsync();
+
+            return Ok(temperatures);
+        }
+
         [Route("GetDangerousTemperaturesFromTheLast24hours")]
         [HttpGet]
         public async Task<IActionResult> GetDangerousTemperaturesFromTheLast24hours()
@@ -83,6 +95,7 @@ namespace XecurityAPI.Controllers
 
             var temperatures2 = await _context.Set<TemperatureDatum>()
             .Include(q => q.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Name)
             .ToListAsync();
 
             foreach (var temperature in temperatures2)
