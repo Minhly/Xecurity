@@ -16,4 +16,5 @@ public partial class Address
     public virtual Company? Company { get; set; }
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
+
 }

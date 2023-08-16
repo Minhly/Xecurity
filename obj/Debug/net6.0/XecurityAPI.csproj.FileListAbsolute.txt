@@ -269,3 +269,6 @@ C:\Users\HFGF\Documents\GitHub\Xecurity\obj\Debug\net6.0\refint\XecurityAPI.dll
 C:\Users\HFGF\Documents\GitHub\Xecurity\obj\Debug\net6.0\XecurityAPI.pdb
 C:\Users\HFGF\Documents\GitHub\Xecurity\obj\Debug\net6.0\XecurityAPI.genruntimeconfig.cache
 C:\Users\HFGF\Documents\GitHub\Xecurity\obj\Debug\net6.0\ref\XecurityAPI.dll
+C:\Users\HFGF\Documents\GitHub\Xecurity\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\HFGF\Documents\GitHub\Xecurity\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\HFGF\Documents\GitHub\Xecurity\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

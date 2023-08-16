@@ -34,12 +34,20 @@ namespace XecurityAPI.Controllers
         {
             DateTime filter = new DateTime();
             filter = DateTime.UtcNow.AddHours(-1);
-            var temperatures = await _context.TemperatureData.ToListAsync();
+
+            var temperatures = await _context.TemperatureData
+            .Where(e => e.DateUploaded > filter)
+            .Include(q => q.Sensor)
+            .Include(e => e.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Location)
+            .Include(e => e.Sensor.ServerRoom.Location.Address)
+            .OrderByDescending(e => e.Id)
+            .ToListAsync();
+
             var temperaturesFiltered = new List<TemperatureDatum>();
 
             foreach(var temperature in temperatures)
             {
-                temperaturesFiltered.Clear();
                 if (temperature.DateUploaded > filter)
                 {
                     temperaturesFiltered.Add(temperature);
@@ -51,11 +59,14 @@ namespace XecurityAPI.Controllers
 
         [Route("GetAllTemperatures")]
         [HttpGet]
-        public async Task<IActionResult> GetAllTemperatures()
+        public async Task<ActionResult<List<TempDangerousDto>>> GetAllTemperatures()
         {
-            var temperatures = await _context.Set<TemperatureDatum>()
-            .Include(q => q.Sensor.ServerRoom)
-            .Include(e => e.Sensor.ServerRoom.Name)
+            var temperatures = await _context.TemperatureData
+            .Include(q => q.Sensor)
+            .Include(e => e.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Location)
+            .Include(e => e.Sensor.ServerRoom.Location.Address)
+            .Take(2)
             .ToListAsync();
 
             return Ok(temperatures);
@@ -67,17 +78,28 @@ namespace XecurityAPI.Controllers
         {
             DateTime filter = new DateTime();
             filter = DateTime.UtcNow.AddDays(-1);
-            var temperatures = await _context.TemperatureData.ToListAsync();
+
+            var temperatures = await _context.TemperatureData
+            .Where(e => e.DateUploaded > filter)
+            .Include(q => q.Sensor)
+            .Include(e => e.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Location)
+            .Include(e => e.Sensor.ServerRoom.Location.Address)
+            .Take(10)
+            .OrderByDescending(e => e.Id)
+            .ToListAsync();
+
             var temperaturesFiltered = new List<TemperatureDatum>();
 
             foreach (var temperature in temperatures)
             {
                 if (temperature.DateUploaded > filter)
                 {
-                    if(temperature.Temperature < 23 || temperature.Temperature > 26)
+                    if (temperature.Temperature < 23 || temperature.Temperature > 26)
                     {
                         temperaturesFiltered.Add(temperature);
                     }
+                    temperaturesFiltered.Add(temperature);
                 }
             }
 
@@ -90,15 +112,19 @@ namespace XecurityAPI.Controllers
         {
             DateTime filter = new DateTime();
             filter = DateTime.UtcNow.AddDays(-1);
-            var temperatures = await _context.TemperatureData.ToListAsync();
             var temperaturesFiltered = new List<TemperatureDatum>();
 
-            var temperatures2 = await _context.Set<TemperatureDatum>()
-            .Include(q => q.Sensor.ServerRoom)
-            .Include(e => e.Sensor.ServerRoom.Name)
+            var temperatures = await _context.TemperatureData
+            .Where(e => e.DateUploaded > filter)
+            .Include(q => q.Sensor)
+            .Include(e => e.Sensor.ServerRoom)
+            .Include(e => e.Sensor.ServerRoom.Location)
+            .Include(e => e.Sensor.ServerRoom.Location.Address)
+            .Take(10)
+            .OrderByDescending(e => e.Id)
             .ToListAsync();
 
-            foreach (var temperature in temperatures2)
+            foreach (var temperature in temperatures)
             {
                 if (temperature.DateUploaded > filter)
                 {

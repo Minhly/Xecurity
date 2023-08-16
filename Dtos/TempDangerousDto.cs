@@ -12,10 +12,13 @@ namespace XecurityAPI.Dtos
 
         public DateTime? DateUploaded { get; set; }
 
-        public int? SensorId { get; set; }
-
         public virtual ServerRoom ServerRoom { get; set; }
 
+        public virtual Location Location { get; set; }
+
+        public virtual Address Address { get; set; }
+
         public virtual Sensor? Sensor { get; set; }
+
     }
 }
