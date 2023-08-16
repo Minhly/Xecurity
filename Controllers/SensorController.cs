@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using XecurityAPI.Data;
+using XecurityAPI.Dtos;
 using XecurityAPI.Models;
 
 namespace XecurityAPI.Controllers
@@ -30,6 +31,27 @@ namespace XecurityAPI.Controllers
             }
 
             return Ok(sensor);
+        }
+
+        [Route("GetAllowedKeycards/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllowedKeycards(int id)
+        {
+            var allowedKeyCards = await _context.KeycardServerrooms
+            .Where(e => e.ServerRoom.Sensors.FirstOrDefault().Id == id)
+            .Select(e => new SensorGetAllowedKeyCardsDto
+            {
+                Id = e.Id,
+                Name = e.ServerRoom.Sensors.FirstOrDefault().Name,
+                ServerRoomName = e.ServerRoom.Name,
+                LocationName = e.ServerRoom.Location.Name,
+                KeyCardPassword = e.KeyCard.Password,
+                KeyCardActive = (bool)e.KeyCard.Active
+            })
+            .OrderByDescending(e => e.Id)
+            .ToListAsync();
+
+            return Ok(allowedKeyCards);
         }
 
         [Route("GetSensors")]

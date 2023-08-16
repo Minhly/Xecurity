@@ -38,6 +38,101 @@ namespace XecurityAPI.Controllers
             return Ok(keyCard);
         }
 
+        /*
+        [Route("PostKeyCardDataHistory")]
+        [HttpPost]
+        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(KeyCardDataHistory cardHistory, IFormFile image) {
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.DateUploaded == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("No image uploaded");
+            }
+            try
+            {
+                // create new filepath and save it in cardHistory
+                var filePath = Path.Combine("C:/Users/HFGF/Desktop/Billeder_xecurity", image.FileName);
+                cardHistory.ImageData = filePath;
+
+                //save image
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            
+            _context.KeyCardDataHistories.Add(cardHistory);
+            await _context.SaveChangesAsync();
+            return Ok("Key card history updated");
+
+        }*/
+
+        
+        [Route("PostKeyCardDataHistory2")]
+        [HttpPost]
+        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory2(KeyCardDataHistory cardHistory) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.DateUploaded == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.KeyCardDataHistories.Add(cardHistory);
+            await _context.SaveChangesAsync();
+            return Ok("Key card history updated");
+
+        }
+
+
+        [Route("PostKeyCardDataHistory")]
+        [HttpPost]
+        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(IFormFile image)
+        {
+
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("No image uploaded");
+            }
+
+            try
+            {
+                // create new filepath and save it in cardHistory
+                var filePath = Path.Combine("C:/Users/HFGF/Desktop/Billeder_xecurity", image.FileName);
+
+                //save image
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+                return Ok(filePath);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            
+
+        }
+
         [HttpPost]
         public async Task<ActionResult<KeyCard>> PostKeycard(KeyCard keyCard)
         {
