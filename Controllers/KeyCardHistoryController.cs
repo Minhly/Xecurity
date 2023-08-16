@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XecurityAPI.Data;
+using XecurityAPI.Dtos;
 using XecurityAPI.Models;
 
 namespace XecurityAPI.Controllers
@@ -20,9 +21,23 @@ namespace XecurityAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetKeyHistoryCards()
         {
-            var keyCardHistories = await _context.KeyCardDataHistories.ToListAsync();
+            var keyCardHistory = await _context.KeyCardDataHistories
+            .Select(e => new KeyCardHistoryDto
+            {
+                Id = e.Id,
+                DateUploaded = e.DateUploaded,
+                ImageData = e.ImageData,
+                Status = e.Status,
+                KeyCardId = e.KeyCard.Id,
+                AddressName = e.KeyCard.KeycardServerrooms.FirstOrDefault().ServerRoom.Location.Address.Addresse,
+                ServerRoomName = e.KeyCard.KeycardServerrooms.ToList(),
+                LocationName = e.KeyCard.KeycardServerrooms.FirstOrDefault().ServerRoom.Location.Name,
+                User = e.KeyCard.User.Name
+            })
+            .OrderByDescending(e => e.Id)
+            .ToListAsync();
 
-            return Ok(keyCardHistories);
+            return Ok(keyCardHistory);
         }
     }
 }
