@@ -37,14 +37,20 @@ namespace XecurityAPI.Controllers
 
             var temperatures = await _context.TemperatureData
             .Where(e => e.DateUploaded > filter)
-            .Include(q => q.Sensor)
-            .Include(e => e.Sensor.ServerRoom)
-            .Include(e => e.Sensor.ServerRoom.Location)
-            .Include(e => e.Sensor.ServerRoom.Location.Address)
+            .Select(e => new TempDangerousDto
+            {
+                Id = e.Id,
+                Temperature = e.Temperature,
+                Humidity = e.Humidity,
+                DateUploaded = e.DateUploaded,
+                ServerRoomName = e.Sensor.ServerRoom.Name,
+                LocationName = e.Sensor.ServerRoom.Location.Name,
+                LocationAddress = e.Sensor.ServerRoom.Location.Address.Addresse
+            })
             .OrderByDescending(e => e.Id)
             .ToListAsync();
 
-            var temperaturesFiltered = new List<TemperatureDatum>();
+            var temperaturesFiltered = new List<TempDangerousDto>();
 
             foreach(var temperature in temperatures)
             {

@@ -16,4 +16,5 @@ public partial class ServerRoom
     public virtual Location? Location { get; set; }
 
     public virtual ICollection<Sensor> Sensors { get; set; } = new List<Sensor>();
+
 }
