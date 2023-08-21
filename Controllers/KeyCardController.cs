@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XecurityAPI.Data;
+using XecurityAPI.Dtos;
 using XecurityAPI.Models;
 
 namespace XecurityAPI.Controllers
@@ -25,12 +26,21 @@ namespace XecurityAPI.Controllers
             return Ok(keyCards);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetKeyCard(int id)
+        [HttpGet("GetKeyCardByPassword/{password}/{serverroomid}")]
+        public async Task<IActionResult> GetKeyCard(string password, int serverroomid)
         {
-            var keyCard = await _context.KeyCards.FindAsync(id);
+            var keyCard = await _context.KeycardServerrooms
+            .Where(e => e.KeyCard.Password == password && e.KeyCard.Active == true && e.ServerRoomId == serverroomid && DateTime.UtcNow < e.KeyCard.ExpDate)
+            .Select(e => new KeyCardServerRoomsDto
+            {
+                KeyCardId = e.KeyCard.Id,
+                ServerRoomName = e.ServerRoom.Name,
+                ServerRoomId = (int)e.ServerRoomId,
+                Password = password
+            })
+            .ToListAsync();
 
-            if(keyCard == null)
+            if (keyCard == null)
             {
                 return BadRequest("Keycard not found!");
             }
@@ -39,72 +49,71 @@ namespace XecurityAPI.Controllers
         }
 
         /*
+[Route("PostKeyCardDataHistory")]
+[HttpPost]
+public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(KeyCardDataHistory cardHistory, IFormFile image) {
+
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.DateUploaded == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (image == null || image.Length == 0)
+    {
+        return BadRequest("No image uploaded");
+    }
+    try
+    {
+        // create new filepath and save it in cardHistory
+        var filePath = Path.Combine("C:/Users/HFGF/Desktop/Billeder_xecurity", image.FileName);
+        cardHistory.ImageData = filePath;
+
+        //save image
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await image.CopyToAsync(stream);
+        }
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex);
+    }
+
+    _context.KeyCardDataHistories.Add(cardHistory);
+    await _context.SaveChangesAsync();
+    return Ok("Key card history updated");
+
+}*/
+
         [Route("PostKeyCardDataHistory")]
         [HttpPost]
-        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(KeyCardDataHistory cardHistory, IFormFile image) {
-            
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.DateUploaded == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (image == null || image.Length == 0)
-            {
-                return BadRequest("No image uploaded");
-            }
-            try
-            {
-                // create new filepath and save it in cardHistory
-                var filePath = Path.Combine("C:/Users/HFGF/Desktop/Billeder_xecurity", image.FileName);
-                cardHistory.ImageData = filePath;
-
-                //save image
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await image.CopyToAsync(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-            
-            _context.KeyCardDataHistories.Add(cardHistory);
-            await _context.SaveChangesAsync();
-            return Ok("Key card history updated");
-
-        }*/
-
-        
-        [Route("PostKeyCardDataHistory2")]
-        [HttpPost]
-        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory2(KeyCardDataHistory cardHistory) {
+        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(KeyCardDataHistory cardHistory)
+        {
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.DateUploaded == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
+            if (cardHistory.DateUploaded == null || cardHistory.Status == null || cardHistory.KeyCardId == null) // imagedata isn't testet as its always null
             {
                 return BadRequest(ModelState);
             }
 
             _context.KeyCardDataHistories.Add(cardHistory);
             await _context.SaveChangesAsync();
-            return Ok("Key card history updated");
-
+            return Ok("Key card history updated ");
         }
 
 
-        [Route("PostKeyCardDataHistory")]
+        [Route("PostImageData")]
         [HttpPost]
-        public async Task<ActionResult<KeyCardDataHistory>> PostKeyCardDataHistory(IFormFile image)
+        public async Task<ActionResult<KeyCardDataHistory>> PostImageData(IFormFile image)
         {
 
             if (image == null || image.Length == 0)
@@ -115,22 +124,19 @@ namespace XecurityAPI.Controllers
             try
             {
                 // create new filepath and save it in cardHistory
-                var filePath = Path.Combine("C:/Users/HFGF/Desktop/Billeder_xecurity", image.FileName);
+                var filePath = Path.Combine("C:/Users/HFGF/Documents/GitHub/Html/image/", image.FileName);
 
                 //save image
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await image.CopyToAsync(stream);
                 }
-                return Ok(filePath);
+                return Ok("/image/" + image.FileName);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-
-            
-
         }
 
         [HttpPost]
@@ -150,7 +156,7 @@ namespace XecurityAPI.Controllers
                 _context.KeyCards.Remove(keyCard);
                 await _context.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -163,7 +169,7 @@ namespace XecurityAPI.Controllers
         {
             var keyCard = _context.KeyCards.FirstOrDefault(c => c.Id == id);
 
-            keyCard.Password = updatedKeyCard.Password;
+             keyCard.Password = updatedKeyCard.Password;
             keyCard.ExpDate = updatedKeyCard.ExpDate;
             keyCard.Active = updatedKeyCard.Active;
             keyCard.UserId = updatedKeyCard.UserId;
@@ -173,6 +179,6 @@ namespace XecurityAPI.Controllers
             return Ok(keyCard);
 
         }
-        
+
     }
 }

@@ -28,9 +28,9 @@ namespace XecurityAPI.Controllers
                 DateUploaded = e.DateUploaded,
                 ImageData = e.ImageData,
                 Status = e.Status,
+                ServerRoomName = e.ServerRoomName,
                 KeyCardId = e.KeyCard.Id,
                 AddressName = e.KeyCard.KeycardServerrooms.FirstOrDefault().ServerRoom.Location.Address.Addresse,
-                ServerRoomName = e.KeyCard.KeycardServerrooms.ToList(),
                 LocationName = e.KeyCard.KeycardServerrooms.FirstOrDefault().ServerRoom.Location.Name,
                 User = e.KeyCard.User.Name
             })

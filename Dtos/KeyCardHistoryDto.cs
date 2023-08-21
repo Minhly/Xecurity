@@ -16,8 +16,7 @@ namespace XecurityAPI.Dtos
 
         public int KeyCardId { get; set; }
 
-        public List<KeycardServerroom> ServerRoomName { get; set; }
-
+        public string ServerRoomName { get; set; }
         public string LocationName { get; set;}
 
         public string AddressName { get; set; }

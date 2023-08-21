@@ -13,6 +13,8 @@ public partial class KeyCardDataHistory
 
     public string? ImageData { get; set; }
 
+    public string? ServerRoomName { get; set; }
+
     public int? KeyCardId { get; set; }
 
     public virtual KeyCard? KeyCard { get; set; }

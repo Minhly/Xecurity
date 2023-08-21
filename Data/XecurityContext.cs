@@ -115,6 +115,9 @@ public partial class XecurityContext : DbContext
             entity.Property(e => e.ImageData)
                 .HasMaxLength(255)
                 .HasColumnName("image_data");
+            entity.Property(e => e.ServerRoomName)
+                .HasMaxLength(255)
+                .HasColumnName("server_room_name");
             entity.Property(e => e.KeyCardId).HasColumnName("key_card_id");
             entity.Property(e => e.Status)
                 .HasMaxLength(100)
